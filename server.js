@@ -77,7 +77,7 @@ app.post("/auth/signup", async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = new User({
       name: name.trim(),
@@ -133,20 +133,34 @@ app.post("/auth/login", async (req, res) => {
       });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const protectedEmail = email.trim().toLowerCase();
 
-    const existingUser = await User.findOne({
-      email: normalizedEmail,
+    if (!/^\S+@\S+\.\S+$/.test(protectedEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid email",
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must contain at least 8 characters",
+      });
+    }
+
+    const LoginUser = await User.findOne({
+      email: protectedEmail,
     });
 
-    if (!existingUser) {
+    if (!LoginUser) {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",
       });
     }
 
-    if (typeof existingUser.password !== "string") {
+    if (typeof LoginUser.password !== "string") {
       console.error("Stored password hash is missing");
       return res.status(500).json({
         success: false,
@@ -156,7 +170,7 @@ app.post("/auth/login", async (req, res) => {
 
     const isPasswordValid = await bcrypt.compare(
       password,
-      existingUser.password
+      LoginUser.password
     );
 
     if (!isPasswordValid) {
@@ -172,9 +186,9 @@ app.post("/auth/login", async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: existingUser._id.toString(),
-        email: existingUser.email,
-        name: existingUser.name,
+        id: LoginUser._id.toString(),
+        email: LoginUser.email,
+        name: LoginUser.name,
       },
       process.env.TOKEN_SECRET,
       { expiresIn: "1h" }
@@ -182,17 +196,12 @@ app.post("/auth/login", async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Login successful. Welcome ${existingUser.name}`,
+      message: `Login successful. Welcome ${LoginUser.name}`,
       token,
     });
 
   } catch (error) {
     console.error("Login Error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
   }
 });
 
