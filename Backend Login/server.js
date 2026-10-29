@@ -5,6 +5,7 @@ import Connectdb from './src/Db/db.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { User } from './src/models/UserSchema.js'
+import { Expense } from './src/models/ExpenseSchema.js'
 
 const app = express()
 
@@ -119,7 +120,8 @@ app.post("/auth/signup", async (req, res) => {
 
 app.post("/auth/login", async (req, res) => {
   try {
-    const { email, password } = req.body ?? {};
+    const email = req.body.email;
+    const password = req.body.password
 
     if (
       typeof email !== "string" ||
@@ -142,12 +144,6 @@ app.post("/auth/login", async (req, res) => {
       });
     }
 
-    if (password.length < 8) {
-      return res.status(400).json({
-        success: false,
-        message: "Password must contain at least 8 characters",
-      });
-    }
 
     const LoginUser = await User.findOne({
       email: protectedEmail,
@@ -160,8 +156,16 @@ app.post("/auth/login", async (req, res) => {
       });
     }
 
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must contain at least 8 characters",
+      });
+    }
+
+
     if (typeof LoginUser.password !== "string") {
-      console.error("Stored password hash is missing");
+      console.error("password hash is missing");
       return res.status(500).json({
         success: false,
         message: "Account password is invalid",
@@ -191,7 +195,7 @@ app.post("/auth/login", async (req, res) => {
         name: LoginUser.name,
       },
       process.env.TOKEN_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: process.env.TOKEN_EXPIRES_IN }
     );
 
     return res.status(200).json({
@@ -206,6 +210,68 @@ app.post("/auth/login", async (req, res) => {
 });
 
 
+const CheckToken =(req,res,next) => {
+  try {
+    
+    const authHeader = req.headers.authorization;
+    
+    if(!authHeader || !authHeader.startsWith("Bearer ")){
+      return res.status(401).json({
+        success:false,
+        msg:"Invalid Token or Access Denied"
+      })
+    }
+    const Token = authHeader.split(" ")[1]
+    const Verify = jwt.verify(Token,process.env.TOKEN_SECRET)
+    req.user = Verify;
+    next()
+  } catch (error) {
+    console.log(error)
+
+    res.status(500).json({
+      success:false,
+      msg:"Inernal Server Error"
+      
+    })
+  }
+
+}
+
+app.post("/expense/create", CheckToken, async (req, res) => {
+  try {
+    
+    const title = req.body.title;
+    const desc = req.body.desc;
+    const amount = req.body.amount;
+    const date = req.body.date;
+    
+    if (typeof title !== "string" || typeof amount !== 'number' || !title.trim()) {
+      res.status(401).json({
+        success: false,
+        msg: "title and amount are Required"
+      })
+    }
+    
+    const expense = await new Expense({
+      title, desc, amount, date
+    }).save()
+
+    console.log(expense)
+    
+    res.status(201).json({
+      success: true,
+      msg: "Expense Added",
+      expense
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      success:false,
+      msg:"Internal Server Error"
+    })
+  }
+
+})
 
 const PORT = process.env.PORT;
 const HostName = "127.0.0.1"
