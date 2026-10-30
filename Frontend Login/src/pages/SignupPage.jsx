@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 function SignupPage() {
+const Navigate = useNavigate()
 
   const [signup, setSignup] = useState({})
   const [name, setName] = useState("")
@@ -129,8 +130,12 @@ function SignupPage() {
                 Reset
               </button>
               <button
+              onClick={()=>{
+                return Navigate("/")
+              }}
                 type="submit"
                 className="w-30 shadow-2xs bg-white-500 border-1 cursor-pointer text-black py-2 rounded-lg font-semibold"
+                
               >
                 Register
               </button>

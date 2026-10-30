@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { createContext, useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router'
+import { AuthContext } from '../App'
 
-function LoginPage() {
-  const [login, setLogin] = useState({})
+
+
+function LoginPage() { 
+
+  const Navigate = useNavigate()
+  const {isLogin,setIsLogin} = useContext(AuthContext)
+  const [user, setUser] = useState({})
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-
 const HandleSubmit =async(e)=>{
-e.PreventDefault()
+e.preventDefault()
 try {
   const res = await fetch("http://127.0.0.1:8080/auth/login", {
         method: "POST",
@@ -22,10 +28,15 @@ try {
 
       const data = await res.json();
 
-      console.log(data.user);
-      setSignup(data);
+      console.log(data);
+      setUser(data);
       setEmail("");
       setPassword("");
+      if(!res.ok){
+        return setIsLogin(false)
+      }else{
+        return setIsLogin(true)
+      }
 } catch (error) {
   console.log(error)
 }
@@ -85,6 +96,9 @@ try {
                 Reset
               </button>
               <button
+              onClick={()=>{
+                return Navigate("/expense/create")
+              }}
                 type="submit"
                 className="w-30 shadow-2xs bg-white-500 border-1 cursor-pointer text-black py-2 rounded-lg font-semibold"
               >
