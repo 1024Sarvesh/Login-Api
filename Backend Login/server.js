@@ -3,6 +3,7 @@ import 'dotenv/config'
 import cors from 'cors'
 import ConnectDb from './src/db/ConnectDb.js'
 import Signup from './src/Controllers/signup.js'
+import Login from './src/Controllers/login.js'
 
 const app = express()
 
@@ -12,6 +13,7 @@ app.use(cors())
 ConnectDb()
 
 app.post("/auth/signup",Signup)
+app.post("/auth/login",Login)
 
 
 const HostName = "127.0.0.1";

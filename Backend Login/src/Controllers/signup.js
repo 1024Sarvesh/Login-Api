@@ -15,7 +15,7 @@ const Signup = async (req, res) => {
             !password) {
             res.status(401).json({
                 success: false,
-                msg: "name,email and password are required"
+                message: "name,email and password are required"
             })
             return
 
@@ -33,7 +33,7 @@ const Signup = async (req, res) => {
         if (password.length < 8) {
             res.status(401).json({
                 success: false,
-                msg: "Password must contain at least 8 characters"
+                message: "Password must contain at least 8 characters"
             })
             return
         }
@@ -57,7 +57,7 @@ const Signup = async (req, res) => {
         if (!(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/).test(email)) {
             res.status(401).json({
                 success: false,
-                msg: "Invalid Email"
+                message: "Invalid Email"
             })
         }
 
@@ -71,7 +71,7 @@ const Signup = async (req, res) => {
         const saveUser = await NewUser.save()
 
         res.status(201).json({
-            msg: "User registered successfully",
+            message: "User registered successfully",
             user: {
                 id: NewUser._id,
                 name: NewUser.name,
@@ -84,7 +84,7 @@ const Signup = async (req, res) => {
         console.log(error)
         res.status(500).json({
             success: false,
-            msg: "Internal Server Error"
+            message: "Internal Server Error"
         })
     }
 
