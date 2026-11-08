@@ -5,7 +5,7 @@ import ConnectDb from './src/db/ConnectDb.js'
 import Signup from './src/Controllers/signup.js'
 import Login from './src/Controllers/login.js'
 import { checkToken } from './src/middleware/CheckToken.js'
-import { CreateExpense, DeleteExpense, GetAllExpenses, GetExpenseById, UpdateExpense } from './src/Controllers/expense.js'
+import { CreateExpense, DeleteExpense, GetAllExpenses, GetExpenseById, GetUserExpenses, UpdateExpense } from './src/Controllers/expense.js'
 
 const app = express()
 
@@ -20,6 +20,7 @@ app.post("/expense/create", checkToken, CreateExpense)
 app.get("/expense/all", checkToken, GetAllExpenses)
 app.get("/expense/:id", checkToken, GetExpenseById)
 app.put("/expense/update/:id", checkToken, UpdateExpense)
+app.get("/expense/users/:id",checkToken,GetUserExpenses)
 app.delete("/expense/delete/:id", checkToken, DeleteExpense)
 
 

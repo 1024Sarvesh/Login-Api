@@ -20,7 +20,6 @@ export const CreateExpense = async (req, res) => {
             });
         }
 
-        console.log(req.body);
         const expense = await new Expense({
             title,
             description,
@@ -46,7 +45,6 @@ export const CreateExpense = async (req, res) => {
 
 }
 
-
 export const GetAllExpenses = async (req, res) => {
     try {
         const expenses = await Expense.find({
@@ -67,6 +65,7 @@ export const GetAllExpenses = async (req, res) => {
         });
     }
 };
+
 export const GetExpenseById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -104,8 +103,6 @@ export const GetExpenseById = async (req, res) => {
     }
 };
 
-
-
 export const UpdateExpense = async (req, res) => {
     try {
         const { id } = req.params;
@@ -118,7 +115,7 @@ export const UpdateExpense = async (req, res) => {
             });
         }
 
-        if (title !== undefined &&(typeof title !== "string" || !title.trim())) {
+        if (title !== undefined && (typeof title !== "string" || !title.trim())) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid title",
@@ -134,9 +131,9 @@ export const UpdateExpense = async (req, res) => {
 
         const updateExpense = {};
 
-        if (title !== undefined){
+        if (title !== undefined) {
             updateExpense.title = title;
-        } 
+        }
         if (description !== undefined) {
             updateExpense.description = description;
         }
@@ -182,10 +179,6 @@ export const UpdateExpense = async (req, res) => {
     }
 };
 
-
-
-
-
 export const DeleteExpense = async (req, res) => {
     try {
         const { id } = req.params;
@@ -224,3 +217,22 @@ export const DeleteExpense = async (req, res) => {
         });
     }
 };
+
+
+export const GetUserExpenses = async(req,res)=>{
+    try {
+        const userId = req.params.userId;
+         const Expenses = await Expense.find({ 
+      user: new mongoose.Types.ObjectId(userId) 
+    });
+
+        return res.status(250).json({
+      success: true,
+      count: Expenses.length,
+      message: Expenses
+    });
+
+    } catch (error) {
+        console.log(error)
+    }
+}
