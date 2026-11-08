@@ -76,6 +76,7 @@ const Signup = async (req, res) => {
                 id: NewUser._id,
                 name: NewUser.name,
                 email: NewUser.email,
+                gender:NewUser.gender,
                 createdAt: NewUser.createdAt,
             }
         })
