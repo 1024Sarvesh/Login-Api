@@ -7,6 +7,9 @@ import LoginPage from './pages/LoginPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import AuthProvider from './context/AuthContext'
 import Expense from './pages/Expense'
+import ProtectedLayout from './components/ProtectedLayout'
+import MainLayout from './components/MainLayout'
+import AllUser from './pages/AllUser'
 
 function App() {
   return (
@@ -14,12 +17,19 @@ function App() {
       <Header />
       <Routes>
         <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedLayout/>}>
+        <Route element={<MainLayout/>}>
           <Route path='/'
             element={<HomePage />}
             />
           <Route path='/expense/create' element={<Expense />} />
+          <Route path='/auth/allusers' element={<AllUser />} />
+            </Route>
+            </Route>
 
         </Route>
+
+
         <Route path='/auth/signup'
           element={<SignupPage />}
         />
