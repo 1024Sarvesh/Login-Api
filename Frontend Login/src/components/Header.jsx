@@ -10,7 +10,7 @@ function Header() {
 
     const handleLogout = () => {
         document.cookie = "token=; max-age=0; path=/";
-
+        window.location.reload()
         setIsLogin(false);
 
         navigate("/auth/login");
@@ -25,34 +25,41 @@ function Header() {
                         Login API
                     </Link>
                 </div>
-
-                <nav className="hidden md:flex items-center gap-8">
+                {isLogin ? <nav className="hidden md:flex items-center gap-8">
                     <Link to="/" className="hover:text-sky-400 transition">
                         Home
                     </Link>
 
-                    <Link to="/about" className="hover:text-sky-400 transition">
-                        About
+
+                    <Link to="/" className="hover:text-sky-400 transition">
+                        All Users
                     </Link>
 
-                    <Link to="/contact" className="hover:text-sky-400 transition">
-                        Contact
+                    <Link to="/expense/create" className="hover:text-sky-400 transition">
+                        Add Expense
                     </Link>
-                </nav>
+                </nav> :
+                    <nav className="hidden md:flex items-center gap-8">
+                        <Link to="/" className="hover:text-sky-400 transition">
+                        Home
+                    </Link>
+                    </nav>
+                }
+
 
                 <div className="flex items-center gap-3">
 
                     {isLogin ? (
                         <button
                             onClick={handleLogout}
-                            className="px-5 py-2 border border-sky-400 rounded-lg hover:bg-sky-400 hover:text-gray-900 transition"
+                            className="px-5 py-2 border border-sky-400 rounded-lg hover:bg-sky-400 hover:text-gray-900 transition cursor-pointer"
                         >
                             Logout
                         </button>
                     ) : (
                         <Link
                             to="/auth/login"
-                            className="px-5 py-2 border border-sky-400 rounded-lg hover:bg-sky-400 hover:text-gray-900 transition"
+                            className="px-5 py-2 border border-sky-400 rounded-lg hover:bg-sky-400 hover:text-gray-900 transition cursor-pointer"
                         >
                             Login
                         </Link>
@@ -61,7 +68,7 @@ function Header() {
                     {!isLogin && (
                         <Link
                             to="/auth/signup"
-                            className="px-5 py-2 bg-sky-400 text-gray-900 font-semibold rounded-lg hover:bg-sky-500 transition"
+                            className="px-5 py-2 bg-sky-400 text-gray-900 font-semibold rounded-lg hover:bg-sky-500 transition cursor-pointer"
                         >
                             Signup
                         </Link>

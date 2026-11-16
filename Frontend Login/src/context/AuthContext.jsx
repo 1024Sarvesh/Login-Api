@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react'
+import { getCookie } from '../utils/getcookie';
 
 
 export const AuthContext = createContext()
@@ -9,17 +10,15 @@ export const useAuthContext = () => useContext(AuthContext)
 function AuthProvider({ children }) {
 
 
-   const [isLogin, setIsLogin] = useState(() => {
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
-
-    return !!token;
-  });
+   const [isLogin, setIsLogin] = useState(getCookie("token") ? true : false);
+   const [user, setUser] = useState(
+    getCookie("token")
+      ? { name: getCookie("name"), email: getCookie("email") }
+      : null,
+  );
 
 return (
-  <AuthContext.Provider value={{ isLogin, setIsLogin }}>
+  <AuthContext.Provider value={{ isLogin, setIsLogin,user,setUser }}>
     {children}
   </AuthContext.Provider>
 )

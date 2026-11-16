@@ -17,7 +17,7 @@ ConnectDb()
 
 app.post("/auth/signup", Signup)
 app.post("/auth/login", Login)
-app.get("/auth/allusers",AllUser)
+app.get("/auth/allusers", checkToken, AllUser)
 app.post("/expense/create", checkToken, CreateExpense)
 app.get("/expense/all", checkToken, GetAllExpenses)
 app.get("/expense/:id", checkToken, GetExpenseById)

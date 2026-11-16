@@ -2,13 +2,14 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from 'react-router'
 import { useAuthContext } from "../context/AuthContext";
+import { setCookie } from "../utils/getcookie";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
 
-  const {setIsLogin } = useAuthContext()
+  const {setIsLogin,setUser } = useAuthContext()
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +39,12 @@ function LoginPage() {
 
       alert("Login Successful!");
 
-      document.cookie = `token=${data.token}; max-age=86400; path=/; SameSite=Lax`;
+      setCookie("token",data.token,1)
+const name = data.user?.name;
+      const userEmail = data.user?.email;
+      setCookie("name", name, 1);
+      setCookie("email", userEmail, 1);
+      setUser({ name, email: userEmail });
 
       setEmail("");
       setPassword("");

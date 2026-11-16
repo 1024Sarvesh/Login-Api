@@ -4,8 +4,9 @@ import { User } from "../model/userSchema.js";
 export const AllUser = async(req,res)=>{
     try {
         const users = await User.find({
-             user: req.user.id
+            user: req.userId
         })
+        console.log(users)
 
         return res.status(200).json({
             success: true,

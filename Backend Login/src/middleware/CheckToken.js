@@ -1,45 +1,50 @@
-import jwt from "jsonwebtoken";
-import 'dotenv/config'
 
-export const checkToken = async (req, res, next) => {
+import jwt from "jsonwebtoken";
+import "dotenv/config";
+
+export const checkToken = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
-        console.log(authHeader)
 
-        if (!authHeader) {
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return res.status(401).json({
                 success: false,
-                message: "Access denied. Token required.",
+                message: "Access denied. Token required."
             });
         }
 
-        const token = authHeader.split(" ")[1];
+        const token = authHeader.slice(7).trim();
 
-        if (!token) {
+        console.log("Token:", token);
+        console.log("Token parts:", token.split(".").length);
+        console.log("Token last character:", token.slice(-1));
+
+        if (!token || token.split(".").length !== 3) {
             return res.status(401).json({
                 success: false,
-                message: "Access denied. Token required.",
+                message: "Malformed JWT token."
             });
         }
 
-        const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+        const decoded = jwt.verify(
+            token,
+            process.env.TOKEN_SECRET
+        );
 
-        console.log("Decoded Token:", decoded);
-
-        req.user = { id: decoded.userId };
+        req.user = {
+            id: decoded.userId
+        };
 
         console.log("User ID:", req.user.id);
 
-
         next();
+
     } catch (error) {
+        console.error("JWT Error:", error.message);
 
-        console.error("Authentication error:", error);
-
-        return res.status(500).json({
+        return res.status(401).json({
             success: false,
-            message: "Authentication failed.",
+            message: "Invalid or expired token."
         });
     }
-
-}
+};
