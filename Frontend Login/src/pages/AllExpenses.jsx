@@ -8,6 +8,7 @@ function AllExpenses() {
     const GetAllExpenses = async()=>{
     
       const token = getCookie("token")?.replace(/;$/, "");
+
       console.log(token)
       try {
         const res = await fetch("http://127.0.0.1:8080/expense/all",{
@@ -19,6 +20,11 @@ function AllExpenses() {
         
         const data = await res.json()
         console.log(data)
+
+        if(data.success== false){
+          return
+        }
+
         setExpenses(data.expenses || data)
         
       } catch (error) {

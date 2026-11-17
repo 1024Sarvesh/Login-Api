@@ -17,17 +17,15 @@ function App() {
     <AuthProvider>
       <Header />
       <Routes>
-        <Route element={<ProtectedRoute />}>
         <Route element={<ProtectedLayout/>}>
-        <Route element={<MainLayout/>}>
-          <Route path='/'element={<HomePage />}/>
-          <Route path='/expense/create' element={<Expense />} />
-          <Route path='/auth/allusers' element={<AllUser />} />
-          <Route path='/expense/all' element={<AllExpenses/>}/>
+          <Route element={<MainLayout/>}>
+                <Route path='/'element={<HomePage />}/>
+                <Route path='/expense/create' element={<Expense />} />
+                <Route path='/auth/allusers' element={<AllUser />} />
+                <Route path='/expense/all' element={<AllExpenses/>}/>
             </Route>
-            </Route>
+          </Route>
 
-        </Route>
 
 
         <Route path='/auth/signup'
