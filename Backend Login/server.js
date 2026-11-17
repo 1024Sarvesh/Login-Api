@@ -7,7 +7,7 @@ import Login from './src/Controllers/login.js'
 import { checkToken } from './src/middleware/CheckToken.js'
 import { CreateExpense, DeleteExpense, GetAllExpenses, GetExpenseById, GetUserExpenses, UpdateExpense } from './src/Controllers/expense.js'
 import { AllUser } from './src/Controllers/AllUsers.js'
-import { GetUserById } from './src/Controllers/User.js'
+import { DeleteUserById, GetUserById } from './src/Controllers/User.js'
 
 const app = express()
 
@@ -25,7 +25,8 @@ app.get("/expense/:id", checkToken, GetExpenseById)
 app.put("/expense/update/:id", checkToken, UpdateExpense)
 app.get("/expense/users/:id",checkToken,GetUserExpenses)
 app.delete("/expense/delete/:id", checkToken, DeleteExpense)
-app.get("/user/:id",GetUserById)
+app.get("/user/:id",checkToken,GetUserById)
+app.delete("/user/delete/:id",checkToken,DeleteUserById)
 
 
 const HostName = "127.0.0.1";

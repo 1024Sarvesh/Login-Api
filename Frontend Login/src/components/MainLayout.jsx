@@ -7,6 +7,7 @@ import { Outlet } from 'react-router'
 function MainLayout() {
     return (
         <>
+        <Header />
             <main className="flex min-h-screen">
                 <Sidebar />
 
