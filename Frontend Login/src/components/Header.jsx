@@ -16,7 +16,7 @@ function Header() {
     const getname = getCookie('name')
     const getemail = getCookie('email')
 
-    console.log(getemail, getname)
+    // console.log(getemail, getname)
 
 
     return (

@@ -31,16 +31,18 @@ const GetAllUsers = async()=>{
 
   return (
     <>
-    {/* <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-5">All Users</h1>
 
             {users.map((user) => (
                 <div key={user._id} className="p-4 border rounded-lg mb-3">
-                    <h2 className="font-semibold">{user.name}</h2>
-                    <p>{user.email}</p>
+                    <h2 className="font-semibold"><b>Name: </b>{user.name}</h2>
+                    <p><b>Email: </b>{user.email}</p>
+                    <p><b>Gender: </b>{user.gender}</p>
+                    <p><b>_Id: </b>{user._id}</p>
                 </div>
             ))}
-        </div> */}
+        </div>
     </>
   )
 }
