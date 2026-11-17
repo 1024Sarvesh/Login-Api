@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCookie } from '../utils/getcookie';
+import { Link } from 'react-router';
 
 function AllUser() {
 
@@ -40,6 +41,7 @@ const GetAllUsers = async()=>{
                     <p><b>Email: </b>{user.email}</p>
                     <p><b>Gender: </b>{user.gender}</p>
                     <p><b>_Id: </b>{user._id}</p>
+                    
                 </div>
             ))}
         </div>

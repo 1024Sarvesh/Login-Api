@@ -41,6 +41,9 @@ function Header() {
                     <Link to="/expense/create" className="hover:text-sky-400 transition">
                         Add Expense
                     </Link>
+                    <Link to="/expense/all" className="hover:text-sky-400 transition">
+                        All Expenses
+                    </Link>
                 </nav> :
                     <nav className="hidden md:flex items-center gap-8">
                         <Link to="/" className="hover:text-sky-400 transition">
