@@ -15,9 +15,6 @@ export const checkToken = (req, res, next) => {
 
         const token = authHeader.slice(7).trim();
 
-        console.log("Token:", token);
-        console.log("Token parts:", token.split(".").length);
-        console.log("Token last character:", token.slice(-1));
 
         if (!token || token.split(".").length !== 3) {
             return res.status(401).json({

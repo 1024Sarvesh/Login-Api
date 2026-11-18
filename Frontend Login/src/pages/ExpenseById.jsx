@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { getCookie } from '../utils/getcookie'
+import { formatDate } from '../utils/formateDate'
 
 function ExpenseById() {
 
@@ -47,7 +48,7 @@ function ExpenseById() {
                         <p><b>Description:</b> {expense.description}</p>
                         <p><b>_Id:</b> {expense._id}</p>
                         <p><b>User_Id:</b> {expense.user}</p>
-                        <p><b>Date:</b> {expense.date}</p>
+                        <p><b>Date:</b> {formatDate(expense.date)} </p>
                     </div>
                 )}
 

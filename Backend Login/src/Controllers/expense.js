@@ -221,7 +221,8 @@ export const DeleteExpense = async (req, res) => {
 
 export const GetUserExpenses = async(req,res)=>{
     try {
-        const userId = req.params.userId;
+        const userId = req.user.id;
+        console.log(userId)
          const Expenses = await Expense.find({ 
       user: new mongoose.Types.ObjectId(userId) 
     });

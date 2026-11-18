@@ -75,8 +75,8 @@ function AllExpenses() {
   return (
     <>
     <div className="max-w-6xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-5">All Expenses</h1>
 
+            <h1 className="text-2xl font-bold mb-5">All Expenses</h1>
             {expenses.map((expense) => (
                 <div key={expense._id} className="p-4 border rounded-lg mb-3">
                   <div>

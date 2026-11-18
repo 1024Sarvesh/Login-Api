@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getCookie } from '../utils/getcookie';
 import { useParams } from 'react-router';
+import { formatDate } from '../utils/formateDate';
 
 function UserById() {
 
@@ -48,7 +49,7 @@ function UserById() {
                     <p><b>Email:</b> {user.email}</p>
                     <p><b>Gender:</b> {user.gender}</p>
                     <p><b>_Id:</b> {user._id}</p>
-                    <p><b>Created_At:</b> {user.createdAt}</p>
+                    <p><b>Created_At:</b> {formatDate(user.createdAt)}</p>
                 </div>
             )}
 
