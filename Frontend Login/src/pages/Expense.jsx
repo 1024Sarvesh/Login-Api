@@ -1,15 +1,40 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { getCookie } from '../utils/getcookie'
 
 function Expense() {
-
     const navigate = useNavigate()
-
+    const { id } = useParams()
     const [title, setTitle] = useState("")
     const [amount, setAmount] = useState("")
     const [date, setDate] = useState("")
-    const [description, setdescription] = useState("")
+    const [description, setDescription] = useState("")
+    // const [loading, setLoading] = useState(false)
+
+
+
+  const [searchParams] = useSearchParams();
+
+  const Paramstitle = searchParams.get('title');
+  const Paramsamount = searchParams.get('amount');
+  const Paramsdescription = searchParams.get('description');
+  const Paramsdate = searchParams.get('date');
+
+
+//   console.log(Paramsamount,Paramsdate,Paramsdescription,Paramstitle)
+
+  useEffect(() => {
+    if (id) {
+        setTitle(Paramstitle || "");
+        setAmount(Paramsamount || "");
+        setDescription(Paramsdescription || "");
+
+        if (Paramsdate) {
+            setDate(new Date(Paramsdate).toISOString().slice(0, 16));
+        }
+    }
+}, [id, Paramstitle, Paramsamount, Paramsdescription, Paramsdate]);
+
 
     const Expense = {
         title: title,
@@ -20,19 +45,23 @@ function Expense() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-       const token = getCookie("token")?.replace(/;$/, "");
-
-console.log("Token last character:", token?.slice(-1));
+        const token = getCookie("token")?.replace(/;$/, "");
         try {
-            const res = await fetch("http://127.0.0.1:8080/expense/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+            const res = await fetch(
+                id
+                    ? `http://127.0.0.1:8080/expense/update/${id}`
+                    : "http://127.0.0.1:8080/expense/create",
+                {
+                    method: id ? "PUT" : "POST",
 
-                },
-                body: JSON.stringify(Expense)
-            })
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+
+                    body: JSON.stringify(Expense)
+                }
+            )
 
             if (!res.ok) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
@@ -40,10 +69,11 @@ console.log("Token last character:", token?.slice(-1));
             const data = await res.json();
 
             console.log(data)
+            alert(data.message)
             setAmount("")
             setDate("")
             setTitle("")
-            setdescription("")
+            setDescription("")
 
             navigate("/")
 
@@ -62,7 +92,7 @@ console.log("Token last character:", token?.slice(-1));
                 <div className="w-full max-w-lg bg-white shadow-lg rounded-xl p-8">
 
                     <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">
-                        Add New Expense
+                        {id ? "Edit Expense" : "Add New Expense"}
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-5">
 
@@ -127,7 +157,7 @@ console.log("Token last character:", token?.slice(-1));
                                 placeholder="Enter expense description"
                                 value={description}
                                 onChange={(e) => {
-                                    setdescription(e.target.value)
+                                    setDescription(e.target.value)
                                 }}
                                 rows="4"
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 resize-none"
@@ -135,25 +165,11 @@ console.log("Token last character:", token?.slice(-1));
                         </div>
                         <button
                             type="submit"
-                            className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-semibold py-3 rounded-lg transition duration-200"
+                            className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-semibold py-3 rounded-lg transition duration-200 disabled:opacity-50"
                         >
-                            Add Expense
+                            {/* Add Expense */}
+                            {id?"Update Expense":"Add Expense"}
                         </button>
-                        <Link className='flex gap-5'>
-                            {/* <button
-                            type="button"
-                            className="w-full bg-green-600 hover:bg-green-700 cursor-pointer text-white font-semibold py-3 rounded-lg transition duration-200"
-                            >
-                            Edit Expense
-                        </button>
-                        <button
-                            type="button"
-                            className="w-full bg-red-600 hover:bg-red-700 cursor-pointer text-white font-semibold py-3 rounded-lg transition duration-200"
-                            >
-                            Delete Expense
-                        </button> */}
-                        </Link>
-
                     </form>
                 </div>
             </div>

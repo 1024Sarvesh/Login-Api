@@ -26,6 +26,7 @@ function App() {
                 <Route path='/expense/all' element={<AllExpenses/>}/>
                 <Route path='/user/:id' element={<UserById/>}/>
                 <Route path='/expense/:id' element={<ExpenseById/>}/>
+                <Route path='/expense/update/:id' element={<Expense/>}/>
             </Route>
           </Route>
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { getCookie } from '../utils/getcookie';
-import { Formatedate } from '../utils/formateDate';
 import { Link } from 'react-router';
 
 function AllExpenses() {
@@ -10,7 +9,7 @@ function AllExpenses() {
     
       const token = getCookie("token")?.replace(/;$/, "");
 
-      console.log(token)
+      // console.log(token)
       try {
         const res = await fetch("http://127.0.0.1:8080/expense/all",{
           headers:{
@@ -32,10 +31,46 @@ function AllExpenses() {
         console.log(error)
       }
       }
-    
+
+
+      
+      
+      
       useEffect(()=>{
         GetAllExpenses()
       },[])
+      const DeleteExpenseById = async (id) => {
+    
+        const token = getCookie("token")?.replace(/;$/, "");
+    
+        try {
+          const res = await fetch(`http://127.0.0.1:8080/expense/delete/${id}`,{
+              method: "DELETE",
+              headers: {
+                "Content-type": "application/json",
+                "Authorization": `Bearer ${token}`
+              }
+            }
+          )
+    
+          const data = await res.json()
+    
+          if (!res.ok) {
+            alert(data.message || "Expense delete failed")
+            return
+          }
+    
+          setExpenses((prevExpenses) =>
+            prevExpenses.filter((expense) => expense._id !== id)
+          )
+    
+          alert("Expense deleted successfully!")
+    
+        } catch (error) {
+          console.log(error)
+          alert("Something went wrong")
+        }
+      }
 
   return (
     <>
@@ -57,8 +92,10 @@ function AllExpenses() {
                     <div className='mt-2 space-x-3'>
 
                           <Link className=' rounded shadow-2xs  mb-2 px-2 py-0.5 bg-indigo-600 text-white' to={`/expense/${expense._id}`}>Details</Link>
-                          <Link className=' rounded shadow-2xs  mb-2 px-2 py-0.5 bg-green-600 text-white'>Edit</Link>
-                          <Link className=' rounded shadow-2xs  mb-2 px-2 py-0.5 bg-red-600 text-white'>Delete</Link>
+                          <Link className=' rounded shadow-2xs  mb-2 px-2 py-0.5 bg-green-600 text-white' 
+                          to={`/expense/update/${expense._id}?title=${expense.title}&amount=${expense.amount}&description=${expense.description}
+                          &date=${expense.date}`}>Edit</Link>
+                          <Link className=' rounded shadow-2xs  mb-2 px-2 py-0.5 bg-red-600 text-white' onClick={() => DeleteExpenseById(expense._id)}>Delete</Link>
 
                     </div>
 

@@ -8,7 +8,7 @@ function AllUser() {
   const GetAllUsers = async () => {
 
     const token = getCookie("token")?.replace(/;$/, "");
-    console.log(token)
+    // console.log(token)
     try {
       const res = await fetch("http://127.0.0.1:8080/auth/allusers", {
         headers: {
