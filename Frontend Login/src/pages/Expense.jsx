@@ -13,27 +13,27 @@ function Expense() {
 
 
 
-  const [searchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
-  const Paramstitle = searchParams.get('title');
-  const Paramsamount = searchParams.get('amount');
-  const Paramsdescription = searchParams.get('description');
-  const Paramsdate = searchParams.get('date');
+    const Paramstitle = searchParams.get('title');
+    const Paramsamount = searchParams.get('amount');
+    const Paramsdescription = searchParams.get('description');
+    const Paramsdate = searchParams.get('date');
 
 
-//   console.log(Paramsamount,Paramsdate,Paramsdescription,Paramstitle)
+    //   console.log(Paramsamount,Paramsdate,Paramsdescription,Paramstitle)
 
-  useEffect(() => {
-    if (id) {
-        setTitle(Paramstitle || "");
-        setAmount(Paramsamount || "");
-        setDescription(Paramsdescription || "");
+    useEffect(() => {
+        if (id) {
+            setTitle(Paramstitle || "");
+            setAmount(Paramsamount || "");
+            setDescription(Paramsdescription || "");
 
-        if (Paramsdate) {
-            setDate(new Date(Paramsdate).toISOString().slice(0, 16));
+            if (Paramsdate) {
+                setDate(new Date(Paramsdate).toISOString().slice(0, 16));
+            }
         }
-    }
-}, [id, Paramstitle, Paramsamount, Paramsdescription, Paramsdate]);
+    }, [id, Paramstitle, Paramsamount, Paramsdescription, Paramsdate]);
 
 
     const Expense = {
@@ -168,7 +168,7 @@ function Expense() {
                             className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-semibold py-3 rounded-lg transition duration-200 disabled:opacity-50"
                         >
                             {/* Add Expense */}
-                            {id?"Update Expense":"Add Expense"}
+                            {id ? "Update Expense" : "Add Expense"}
                         </button>
                     </form>
                 </div>

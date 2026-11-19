@@ -31,13 +31,13 @@ function AllUser() {
     const token = getCookie("token")?.replace(/;$/, "");
 
     try {
-      const res = await fetch(`http://127.0.0.1:8080/user/delete/${id}`,{
-          method: "DELETE",
-          headers: {
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
+      const res = await fetch(`http://127.0.0.1:8080/user/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": `Bearer ${token}`
         }
+      }
       )
 
       const data = await res.json()

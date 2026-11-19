@@ -11,12 +11,12 @@ function SignupPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-         const signupData = {
-        name: name,
-        email: email,
-        password: password,
-        gender: gender
-    };
+        const signupData = {
+            name: name,
+            email: email,
+            password: password,
+            gender: gender
+        };
 
         try {
             const res = await fetch(

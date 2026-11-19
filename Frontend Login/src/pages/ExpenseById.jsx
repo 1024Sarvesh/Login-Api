@@ -27,7 +27,7 @@ function ExpenseById() {
         } catch (error) {
             console.log(error)
         }
-        
+
     }
     useEffect(() => {
         GetExpenseById()

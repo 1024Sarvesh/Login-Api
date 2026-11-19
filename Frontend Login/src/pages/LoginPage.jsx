@@ -9,7 +9,7 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
 
-  const {setIsLogin,setUser } = useAuthContext()
+  const { setIsLogin, setUser } = useAuthContext()
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
@@ -39,10 +39,10 @@ function LoginPage() {
 
       alert("Login Successful!");
 
-      setCookie("token",data.token,1)
-const name = data.user?.name;
+      setCookie("token", data.token, 1)
+      const name = data.user?.name;
       const userEmail = data.user?.email;
-      setCookie("name", name, );
+      setCookie("name", name,);
       setCookie("email", userEmail, 1);
       setUser({ name, email: userEmail });
 

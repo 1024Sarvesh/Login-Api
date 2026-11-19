@@ -52,7 +52,7 @@ function Header() {
                     </nav>
 
                 }
-                
+
 
                 <button
                     onClick={() => setIsOpen(true)}
@@ -63,7 +63,7 @@ function Header() {
 
 
             </div>
-                
+
             {isOpen && (
                 <div
                     onClick={() => setIsOpen(false)}
