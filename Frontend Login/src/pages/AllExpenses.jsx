@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { getCookie } from '../utils/getcookie';
 import { Link } from 'react-router';
+import { formatDate } from '../utils/formateDate';
 
 function AllExpenses() {
 
     const [expenses, setExpenses] = useState([])
+    const [FilteredExpenses, setFilteredExpenses] = useState([])
+    const [selectedDate, setSelectedDate] = useState("");
+    
+    
     const GetAllExpenses = async()=>{
     
       const token = getCookie("token")?.replace(/;$/, "");
@@ -26,15 +31,14 @@ function AllExpenses() {
         }
 
         setExpenses(data.expenses || data)
+        setFilteredExpenses(data.expenses || data)
         
       } catch (error) {
         console.log(error)
       }
+
+      
       }
-
-
-      
-      
       
       useEffect(()=>{
         GetAllExpenses()
@@ -72,12 +76,41 @@ function AllExpenses() {
         }
       }
 
+
+const filteredExpenses = expenses.filter((expense) => {
+
+        if (!selectedDate) return true;
+
+        const expenseDate = new Date(expense.date)
+            .toLocaleDateString("en-CA");
+
+        return expenseDate === selectedDate;
+    });
+
+
+    useEffect(() =>{
+      setFilteredExpenses(filteredExpenses)
+    },[selectedDate])
+
   return (
     <>
     <div className="max-w-6xl mx-auto p-6">
 
             <h1 className="text-2xl font-bold mb-5">All Expenses</h1>
-            {expenses.map((expense) => (
+            
+      <div className='max-w-2xl border h-10 flex justify-around items-center mb-5 rounded-lg'>
+        <h1 className='font-semibold'>Filter expenses by date</h1>
+        <div className='space-x-2 rounded'><input type="date" className='border rounded bg-gray-300'value={selectedDate}
+  onChange={(e) => setSelectedDate(e.target.value)}/>
+  <button className='rounded  px-3 bg-red-500 text-white' onClick={()=>{
+    setSelectedDate("")
+    setFilteredExpenses(expenses)
+  }}>Clear</button>
+  </div>
+      </div>
+      {
+        FilteredExpenses.length ? <>
+         {FilteredExpenses.map((expense) => (
                 <div key={expense._id} className="p-4 border rounded-lg mb-3">
                   <div>
 
@@ -85,8 +118,8 @@ function AllExpenses() {
                     <p><b>Amount: </b>{expense.amount}</p>
                     {/* <p><b>Description: </b>{expense.description}</p>
                     <p><b>Expense_Id: </b>{expense._id}</p>
-                    <p><b>User_Id: </b>{expense.user}</p>
-                    <p><b>Created_At: </b>{expense.date}</p> */}
+                    <p><b>User_Id: </b>{expense.user}</p> */}
+                    <p><b>Created_At: </b>{formatDate(expense.date)}</p>
                     </div>
 
                     <div className='mt-2 space-x-3'>
@@ -101,6 +134,9 @@ function AllExpenses() {
 
                 </div>
             ))}
+        </>:<div>No Expense</div>
+      }
+           
         </div>
     </>
   )

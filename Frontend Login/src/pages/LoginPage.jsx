@@ -42,7 +42,7 @@ function LoginPage() {
       setCookie("token",data.token,1)
 const name = data.user?.name;
       const userEmail = data.user?.email;
-      setCookie("name", name, 1);
+      setCookie("name", name, );
       setCookie("email", userEmail, 1);
       setUser({ name, email: userEmail });
 

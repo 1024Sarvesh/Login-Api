@@ -16,6 +16,7 @@ function AuthProvider({ children }) {
       ? { name: getCookie("name"), email: getCookie("email") }
       : null,
   );
+  
 
 return (
   <AuthContext.Provider value={{ isLogin, setIsLogin,user,setUser }}>
