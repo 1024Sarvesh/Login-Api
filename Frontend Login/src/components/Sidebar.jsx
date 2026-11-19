@@ -16,7 +16,7 @@ function Sidebar() {
 
         navigate("/auth/login");
     };
-
+    
     return (
         <aside className="min-w-2xs bg-indigo-100 p-5 rounded-2xl shadow">
             <div className="flex items-center gap-3">

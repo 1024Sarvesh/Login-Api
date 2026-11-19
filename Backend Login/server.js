@@ -8,6 +8,7 @@ import { checkToken } from './src/middleware/CheckToken.js'
 import { CreateExpense, DeleteExpense, GetAllExpenses, GetExpenseById, GetUserExpenses, UpdateExpense } from './src/Controllers/expense.js'
 import { AllUser } from './src/Controllers/AllUsers.js'
 import { DeleteUserById, GetUserById } from './src/Controllers/User.js'
+import { adminMiddleware } from './src/middleware/Admin.js'
 
 const app = express()
 
@@ -15,7 +16,11 @@ app.use(express.json())
 app.use(cors())
 
 ConnectDb()
-
+app.get("/api/admin/dashboard", checkToken, adminMiddleware, (req, res) => {
+  res.json({
+    message: "Welcome to Admin Dashboard"
+  });
+});
 app.post("/auth/signup", Signup)
 app.post("/auth/login", Login)
 app.get("/auth/allusers", checkToken, AllUser)
