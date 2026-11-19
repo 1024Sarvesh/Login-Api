@@ -8,6 +8,7 @@ function AllExpenses() {
   const [expenses, setExpenses] = useState([])
   const [FilteredExpenses, setFilteredExpenses] = useState([])
   const [selectedDate, setSelectedDate] = useState("");
+  const [searchTitle, setSearchTitle] = useState("");
 
 
   const GetAllExpenses = async () => {
@@ -77,20 +78,33 @@ function AllExpenses() {
   }
 
 
+  // const filteredExpenses = expenses.filter((expense) => {
+
+  //   if (!selectedDate) return true;
+
+  //   const expenseDate = new Date(expense.date)
+  //     .toLocaleDateString("en-CA");
+
+  //   return expenseDate === selectedDate;
+  // });
+
+
   const filteredExpenses = expenses.filter((expense) => {
+  const matchesDate = selectedDate
+    ? new Date(expense.date).toLocaleDateString("en-CA") === selectedDate
+    : true;
 
-    if (!selectedDate) return true;
+  const matchesTitle = expense.title
+    ?.toLowerCase()
+    .includes(searchTitle.toLowerCase());
 
-    const expenseDate = new Date(expense.date)
-      .toLocaleDateString("en-CA");
-
-    return expenseDate === selectedDate;
-  });
+  return matchesDate && matchesTitle;
+});
 
 
-  useEffect(() => {
-    setFilteredExpenses(filteredExpenses)
-  }, [selectedDate])
+  // useEffect(() => {
+  //   setFilteredExpenses(filteredExpenses)
+  // }, [selectedDate])
 
   return (
     <>
@@ -99,7 +113,7 @@ function AllExpenses() {
         <h1 className="text-2xl font-bold mb-5">All Expenses</h1>
 
         <div className='max-w-2xl border h-10 flex justify-around items-center mb-5 rounded-lg'>
-          <h1 className='font-semibold'>Filter expenses by date</h1>
+          <h1 className='font-semibold'>Filter by date</h1>
           <div className='space-x-2 rounded'><input type="date" className='border rounded bg-gray-300' value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)} />
             <button className='rounded  px-3 bg-red-500 text-white' onClick={() => {
@@ -108,9 +122,37 @@ function AllExpenses() {
             }}>Clear</button>
           </div>
         </div>
+
+
+
+        <div className='max-w-2xl border h-10 flex justify-around items-center mb-3 rounded-lg'>
+          <h1 className='font-semibold'>Search by title</h1>
+          <div className='space-x-2 rounded '><input type="text" placeholder="Search by title..."
+           className='border rounded bg-gray-300' value={searchTitle}
+            onChange={(e) => setSearchTitle(e.target.value)} />
+            <button className='rounded  px-3 bg-red-500 text-white' onClick={() => {
+              setSearchTitle("")
+              setFilteredExpenses(expenses)
+            }}>Clear</button>
+          </div>
+        </div>
+        {/* <div className="mb-5">
+  <input
+    type="text"
+    placeholder="Search expenses by title..."
+    className="w-full max-w-2xl border rounded-lg p-2"
+    value={searchTitle}
+    onChange={(e) => setSearchTitle(e.target.value)}
+  />
+
+  <button className='rounded  px-3 bg-red-500 text-white' onClick={() => {
+              setSearchTitle("")
+              setFilteredExpenses(expenses)
+            }}>Clear</button>
+</div> */}
         {
-          FilteredExpenses.length ? <>
-            {FilteredExpenses.map((expense) => (
+          filteredExpenses.length ? <>
+            {filteredExpenses.map((expense) => (
               <div key={expense._id} className="p-4 border rounded-lg mb-3">
                 <div>
 
