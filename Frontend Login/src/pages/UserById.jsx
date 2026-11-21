@@ -48,6 +48,7 @@ function UserById() {
             <p><b>Name:</b> {user.name}</p>
             <p><b>Email:</b> {user.email}</p>
             <p><b>Gender:</b> {user.gender}</p>
+            <p><b>Role:</b> {user.role}</p>
             <p><b>_Id:</b> {user._id}</p>
             <p><b>Created_At:</b> {formatDate(user.createdAt)}</p>
           </div>

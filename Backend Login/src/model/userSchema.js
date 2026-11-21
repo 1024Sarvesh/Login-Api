@@ -30,11 +30,11 @@ const UserSchema = new Schema({
         enum: ["Male", "Female", "Other"],
         required: false,
     },
-    role: {
-        type: String,
-        enum: ["user", "admin"],
-        default: "user"
-    }
+   role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
 
 },
     { timestamps: true }
