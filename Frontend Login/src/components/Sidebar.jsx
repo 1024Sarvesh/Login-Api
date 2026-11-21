@@ -4,21 +4,22 @@ import { Link, useNavigate } from 'react-router'
 
 function Sidebar() {
 
-    const { isLogin, setIsLogin } = useAuthContext()
+    const { isLogin, setIsLogin,setUser } = useAuthContext()
     const navigate = useNavigate()
 
     const handleLogout = () => {
-        document.cookie = "token=; max-age=0; path=/";
-        document.cookie = "name=; max-age=0; path=/";
-        document.cookie = "email=; max-age=0; path=/";
-        window.location.reload()
-        setIsLogin(false);
+  document.cookie = "token=; max-age=0; path=/";
+  document.cookie = "name=; max-age=0; path=/";
+  document.cookie = "email=; max-age=0; path=/";
 
-        navigate("/auth/login");
-    };
+  setIsLogin(false);
+  setUser(null);
+
+  navigate("/auth/login", { replace: true });
+};
     
     return (
-        <aside className="min-w-2xs bg-indigo-100 p-5 rounded-2xl shadow">
+        <aside className="w-full md:w-72 md:min-w-2xs bg-indigo-100 p-4 md:p-5 rounded-2xl shadow">
             <div className="flex items-center gap-3">
 
                 {isLogin ? (

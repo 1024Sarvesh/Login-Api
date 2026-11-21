@@ -9,7 +9,7 @@ function AllExpenses() {
   const [FilteredExpenses, setFilteredExpenses] = useState([])
   const [selectedDate, setSelectedDate] = useState("");
   const [searchTitle, setSearchTitle] = useState("");
-
+  const [month, setMonth] = useState("")
 
   const GetAllExpenses = async () => {
 
@@ -76,43 +76,76 @@ function AllExpenses() {
       alert("Something went wrong")
     }
   }
-
-
-  // const filteredExpenses = expenses.filter((expense) => {
-
-  //   if (!selectedDate) return true;
-
-  //   const expenseDate = new Date(expense.date)
-  //     .toLocaleDateString("en-CA");
-
-  //   return expenseDate === selectedDate;
-  // });
-
-
   const filteredExpenses = expenses.filter((expense) => {
-  const matchesDate = selectedDate
-    ? new Date(expense.date).toLocaleDateString("en-CA") === selectedDate
-    : true;
+    const matchesDate = selectedDate
+      ? new Date(expense.date).toLocaleDateString("en-CA") === selectedDate
+      : true;
 
-  const matchesTitle = expense.title
-    ?.toLowerCase()
-    .includes(searchTitle.toLowerCase());
+    const matchesTitle = expense.title
+      ?.toLowerCase()
+      .includes(searchTitle.toLowerCase());
 
-  return matchesDate && matchesTitle;
-});
+    return matchesDate && matchesTitle;
+  });
 
+  const totalExpense = filteredExpenses.reduce((total, expense) => {
+    return total + Number(expense.amount);
+  }, 0);
 
-  // useEffect(() => {
-  //   setFilteredExpenses(filteredExpenses)
-  // }, [selectedDate])
+  const monthlyExpenses = filteredExpenses.filter((expense) => {
+    const date = new Date(expense.date);
+
+    return (
+      date.getMonth() === Number(month.split("-")[1]) - 1 &&
+      date.getFullYear() === Number(month.split("-")[0])
+    );
+  });
+
+  const monthlyTotal = monthlyExpenses.reduce((total, expense) => {
+    return total + Number(expense.amount);
+  }, 0);
 
   return (
     <>
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-6">
 
-        <h1 className="text-2xl font-bold mb-5">All Expenses</h1>
+        <h1 className="text-3xl text-center font-bold mb-5">All Expenses </h1>
+        <div className="w-full flex flex-wrap gap-3 mb-5">
 
-        <div className='max-w-2xl border h-10 flex justify-around items-center mb-5 rounded-lg'>
+          <div className="flex-1 min-w-[280px] border rounded-lg p-3 flex justify-between items-center">
+            <h1 className="font-semibold text-lg sm:text-xl">
+              Total Expense
+            </h1>
+
+            <h1 className="font-semibold text-lg sm:text-xl">
+              ₹{totalExpense}
+            </h1>
+          </div>
+
+          <div className="flex-1 min-w-[280px] border rounded-lg p-3 flex flex-col gap-2">
+
+            <h1 className="font-semibold text-lg sm:text-xl">
+              Monthly Expense
+            </h1>
+
+            <input
+              type="month"
+              className="border rounded p-1"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+            />
+
+            <h1 className="font-semibold text-lg sm:text-xl">
+              ₹{monthlyTotal}
+            </h1>
+
+          </div>
+        </div>
+
+
+
+
+        <div className='min-w-xl border h-10 flex justify-around items-center mb-5 rounded-lg'>
           <h1 className='font-semibold'>Filter by date</h1>
           <div className='space-x-2 rounded'><input type="date" className='border rounded bg-gray-300' value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)} />
@@ -125,10 +158,10 @@ function AllExpenses() {
 
 
 
-        <div className='max-w-2xl border h-10 flex justify-around items-center mb-3 rounded-lg'>
+        <div className='min-w-xl border h-10 flex justify-around items-center mb-3 rounded-lg'>
           <h1 className='font-semibold'>Search by title</h1>
           <div className='space-x-2 rounded '><input type="text" placeholder="Search by title..."
-           className='border rounded bg-gray-300' value={searchTitle}
+            className='border rounded bg-gray-300' value={searchTitle}
             onChange={(e) => setSearchTitle(e.target.value)} />
             <button className='rounded  px-3 bg-red-500 text-white' onClick={() => {
               setSearchTitle("")
@@ -136,20 +169,6 @@ function AllExpenses() {
             }}>Clear</button>
           </div>
         </div>
-        {/* <div className="mb-5">
-  <input
-    type="text"
-    placeholder="Search expenses by title..."
-    className="w-full max-w-2xl border rounded-lg p-2"
-    value={searchTitle}
-    onChange={(e) => setSearchTitle(e.target.value)}
-  />
-
-  <button className='rounded  px-3 bg-red-500 text-white' onClick={() => {
-              setSearchTitle("")
-              setFilteredExpenses(expenses)
-            }}>Clear</button>
-</div> */}
         {
           filteredExpenses.length ? <>
             {filteredExpenses.map((expense) => (
@@ -158,9 +177,6 @@ function AllExpenses() {
 
                   <h2 className="font-semibold"><b>Title: </b>{expense.title}</h2>
                   <p><b>Amount: </b>{expense.amount}</p>
-                  {/* <p><b>Description: </b>{expense.description}</p>
-                    <p><b>Expense_Id: </b>{expense._id}</p>
-                    <p><b>User_Id: </b>{expense.user}</p> */}
                   <p><b>Created_At: </b>{formatDate(expense.date)}</p>
                 </div>
 

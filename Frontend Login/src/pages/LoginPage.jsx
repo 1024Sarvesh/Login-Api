@@ -1,6 +1,6 @@
 
 import React, { useContext, useState } from "react";
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useAuthContext } from "../context/AuthContext";
 import { setCookie } from "../utils/getcookie";
 
@@ -38,18 +38,19 @@ function LoginPage() {
       console.log("Login Response:", data);
 
       alert("Login Successful!");
-
+      
       setCookie("token", data.token, 1)
       const name = data.user?.name;
       const userEmail = data.user?.email;
-      setCookie("name", name,);
+      setCookie("name", name,1);
       setCookie("email", userEmail, 1);
       setUser({ name, email: userEmail });
-
+      
       setEmail("");
       setPassword("");
       setIsLogin(true);
       navigate("/");
+      // window.location.reload()
 
 
     } catch (error) {
@@ -110,6 +111,7 @@ function LoginPage() {
           >
             Login Now !
           </button>
+          <p className="text-center">Create an Account to <Link className="text-blue-700" to={"/auth/signup"}>Signup</Link></p>
 
         </form>
 

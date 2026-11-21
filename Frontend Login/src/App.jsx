@@ -1,8 +1,6 @@
-import React from 'react'
 import { Route, Routes } from 'react-router'
 import HomePage from './pages/HomePage'
 import SignupPage from './pages/SignupPage'
-import Header from './components/Header'
 import LoginPage from './pages/LoginPage'
 import AuthProvider from './context/AuthContext'
 import Expense from './pages/Expense'
@@ -15,6 +13,7 @@ import ExpenseById from './pages/ExpenseById'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
+
   return (
     <AuthProvider>
 

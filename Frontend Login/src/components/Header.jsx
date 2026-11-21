@@ -20,8 +20,8 @@ function Header() {
 
 
     return (
-        <header className="w-full shadow-lg">
-            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <header className="max-w-full shadow-lg bg-white sticky top-0 z-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
 
                 <div>
                     <Link to="/" className="text-2xl font-bold text-sky-800">
@@ -105,7 +105,7 @@ function Header() {
                                     Full Name
                                 </p>
                                 <p className="font-semibold text-gray-800 truncate">
-                                    {getname || 'User Name'}
+                                    {getname}
                                 </p>
                             </div>
                         </div>
@@ -118,7 +118,7 @@ function Header() {
                                     Email Address
                                 </p>
                                 <p className="font-semibold text-gray-800 truncate">
-                                    {getemail || 'User Email'}
+                                    {getemail}
                                 </p>
                             </div>
                         </div>
